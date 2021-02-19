@@ -1,32 +1,34 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+  <v-app>
+    <app-sidebar />
+    <v-main>
+      <router-view />
+    </v-main>
+    <v-snackbar bottom right :value="snackbarMessage">{{
+      snackbarMessage
+    }}</v-snackbar>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import { mapMutations, mapState } from "vuex";
+import { auth } from "./firebase";
+import AppSidebar from "./components/AppSidebar.vue";
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+export default {
+  components: {
+    AppSidebar
+  },
+  mounted() {
+    auth.onAuthStateChanged(user => {
+      this.setUser(user);
+    });
+  },
+  methods: {
+    ...mapMutations(["setUser"])
+  },
+  computed: {
+    ...mapState(["snackbarMessage"])
+  }
+};
+</script>

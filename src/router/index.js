@@ -1,23 +1,31 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Map from "../views/Map";
+import Details from "../views/Details";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home
+    redirect() {
+      return "/map";
+    }
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    path: "/map",
+    name: "Map",
+    component: Map
+  },
+  {
+    path: "/geocache/:id",
+    name: "GeocacheDetails",
+    component: Details
+  },
+  {
+    path: "/hide",
+    name: "HideNew",
+    component: () => import("../views/AddForm.vue")
   }
 ];
 
