@@ -12,6 +12,7 @@
 
 <script>
 import { mapMutations, mapState } from "vuex";
+import { latLng } from "leaflet";
 import { auth } from "./firebase";
 import AppSidebar from "./components/AppSidebar.vue";
 
@@ -23,9 +24,13 @@ export default {
     auth.onAuthStateChanged(user => {
       this.setUser(user);
     });
+    window.navigator.geolocation.getCurrentPosition(({ coords }) => {
+      const userCoords = latLng(coords.latitude, coords.longitude);
+      this.setUserCoords(userCoords);
+    });
   },
   methods: {
-    ...mapMutations(["setUser"])
+    ...mapMutations(["setUser", "setUserCoords"])
   },
   computed: {
     ...mapState(["snackbarMessage"])

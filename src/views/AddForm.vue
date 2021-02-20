@@ -93,7 +93,7 @@ export default {
     ...mapActions(["showSnackbar"]),
     async save() {
       if (!this.isValidNashvilleCoords) {
-        this.error = "Coordinates must be in Nashville";
+        this.error = "Coordinates must be within 50 miles of Nashville";
         return;
       }
 
@@ -111,9 +111,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(["appBounds"]),
+    ...mapState(["nashvilleCenter"]),
     isValidNashvilleCoords() {
-      return this.appBounds.contains(latLng(this.lat, this.lon));
+      if (!this.lat || !this.lon) return false;
+
+      const metersInMile = 1609.344;
+      const coords = latLng(this.lat, this.lon);
+      const metersFromCityCenter = this.nashvilleCenter.distanceTo(coords);
+      return metersFromCityCenter / metersInMile <= 50;
     }
   }
 };

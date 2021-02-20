@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { latLng, latLngBounds } from "leaflet";
+import { latLng } from "leaflet";
 
 Vue.use(Vuex);
 
@@ -9,8 +9,7 @@ export default new Vuex.Store({
     user: null,
     userCoords: null,
     snackbarMessage: null,
-    nashvilleCenter: latLng(36.1627, -86.7816),
-    appBounds: latLngBounds(latLng(35.89, -87.93), latLng(36.62, -85.61)) // used to determine if coords are valid
+    nashvilleCenter: latLng(36.1627, -86.7816) // used to determine if coords are valid
   },
   mutations: {
     setUser(state, payload) {
